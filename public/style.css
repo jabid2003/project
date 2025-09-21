@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#container {
+  gap: 8px;
+  /* cards ke beech thoda gap */
+  scroll-snap-type: x mandatory;
+  /* horizontal snap enable */
+  -webkit-overflow-scrolling: touch;
+  /* mobile smooth scroll */
+}
+
+#container>div {
+  scroll-snap-align: start;
+  /* har card left edge par snap hoga */
+}
+
+
+#mobilesContainer {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 8px;
+}
+
+#mobilesContainer > div {
+  scroll-snap-align: start;
+}
+
+#mobilesContainer a {
+  flex: 0 0 auto; /* Prevent shrinking */
+}
+
+
+#filteredMobilesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* responsive grid */
+  gap: 1rem;
+}
+.card-small {
+  font-size: 0.75rem;
+  text-align: center;
+}
+.card-small img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+}
