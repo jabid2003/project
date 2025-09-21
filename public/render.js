@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   const latestContainer = document.getElementById("LetestmobilesContainer");
   const popularContainer = document.getElementById("mobilesContainer");
   const brandSelect = document.getElementById("brandFilter");
-  const filterBtn = document.getElementById("filterBtn");
+  const filterBtn = document.getElementById("filterBtnPage"); // brand filter
+  const filterBtnSearch = document.getElementById("filterBtnSearch"); // search button
+  const searchBox = document.getElementById("searchBoxFilter");
 
   // Fetch all mobiles (limit 10)
   try {
@@ -50,34 +52,57 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Populate brand options dynamically
-  try {
-    const resBrands = await fetch("/api/mobiles/brands");
-    const brands = await resBrands.json();
-    brands.forEach(b => {
-      const opt = document.createElement("option");
-      opt.value = b;
-      opt.textContent = b;
-      brandSelect.appendChild(opt);
-    });
-  } catch (err) {
-    console.error("Error fetching brands:", err);
+  if (brandSelect) {
+    try {
+      const resBrands = await fetch("/api/mobiles/brands");
+      const brands = await resBrands.json();
+      brands.forEach(b => {
+        const opt = document.createElement("option");
+        opt.value = b;
+        opt.textContent = b;
+        brandSelect.appendChild(opt);
+      });
+    } catch (err) {
+      console.error("Error fetching brands:", err);
+    }
   }
 
-  // Filter apply - redirect to filtered.html
- filterBtn.addEventListener("click", () => {
-    const brand = brandSelect.value;
-    const sort = sortSelect.value;
+  // Brand Filter click → redirect to filtered.html
+  if (filterBtn) {
+    filterBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const brand = brandSelect.value;
+      const sort = document.getElementById("sortFilter")?.value || "";
+      window.location.href = `filtered.html?brand=${encodeURIComponent(brand)}&sort=${encodeURIComponent(sort)}`;
+    });
+  }
 
-    const params = new URLSearchParams();
-    if (brand) params.append("brand", brand);
-    if (sort) params.append("sort", sort);
+  // Search bar → redirect to searchResults.html
+  if (filterBtnSearch && searchBox) {
+    filterBtnSearch.addEventListener("click", (e) => {
+      e.preventDefault();
+      const query = searchBox.value.trim();
+      if (query) {
+        window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
+      }
+    });
 
-    // Redirect to filtered.html with query params
-    window.location.href = `filtered.html?${params.toString()}`;
-  });
+    // Enter key in search box
+    searchBox.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const query = searchBox.value.trim();
+        if (query) {
+          window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
+        }
+      }
+    });
+  }
 
-  // Optional: Enter key in select/search box
-  brandSelect.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") filterBtn.click();
-  });
+  // Optional: Enter key in brand select triggers filter
+  if (brandSelect) {
+    brandSelect.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") filterBtn.click();
+    });
+  }
 });

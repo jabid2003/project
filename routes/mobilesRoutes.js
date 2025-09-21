@@ -5,11 +5,19 @@ import Mobile from "../models/Mobile.js";
 
 const router = express.Router();
 
-// GET /api/mobiles → list with brand, price, sort
+// GET /api/mobiles → list with brand, price, sort, search
 router.get("/", async (req, res) => {
   try {
-    const { brand, minPrice, maxPrice, sort, page = 1, limit = 10 } = req.query;
+    const { brand, minPrice, maxPrice, sort, page = 1, limit = 10, q } = req.query;
     const filter = {};
+
+    // Search filter (brand OR model)
+    if (q) {
+      filter.$or = [
+        { brand: { $regex: q, $options: "i" } },
+        { model: { $regex: q, $options: "i" } }
+      ];
+    }
 
     // Brand filter
     if (brand) filter.brand = brand;
@@ -77,4 +85,4 @@ router.post("/", async (req, res) => {
   }
 });
 
-export default router; 
+export default router;
