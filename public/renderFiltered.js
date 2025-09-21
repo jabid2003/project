@@ -1,13 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("filteredMobilesContainer");
-  if (!container) return;
-
   const brandSelect = document.getElementById("brandFilter");
   const sortSelect = document.getElementById("sortFilter");
   const filterBtn = document.getElementById("filterBtnPage");
   const searchBox = document.getElementById("searchBox");
 
-  // Populate brand options dynamically
+  // Populate brands
   try {
     const res = await fetch("/api/mobiles/brands");
     const brands = await res.json();
@@ -21,24 +19,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error fetching brands:", err);
   }
 
-  // Helper to fetch mobiles with filters
+  // Get URL params for initial filter
+  const urlParams = new URLSearchParams(window.location.search);
+  const brandParam = urlParams.get("brand") || "";
+  const sortParam = urlParams.get("sort") || "";
+
+  brandSelect.value = brandParam;
+  sortSelect.value = sortParam;
+
   async function fetchMobiles() {
     const params = new URLSearchParams();
-    const q = searchBox.value.trim();
-    const brand = brandSelect.value;
-    const sort = sortSelect.value;
-
-    if (q) params.append("q", q);
-    if (brand) params.append("brand", brand);
-    if (sort) params.append("sort", sort);
+    if (brandSelect.value) params.append("brand", brandSelect.value);
+    if (sortSelect.value) params.append("sort", sortSelect.value);
 
     try {
       const res = await fetch(`/api/mobiles?${params.toString()}`);
       const data = await res.json();
 
       container.innerHTML = "";
-      if (!data.results || data.results.length === 0) {
-        container.innerHTML = `<p class="text-muted">No mobiles found.</p>`;
+      if (!data.results.length) {
+        container.innerHTML = "<p class='text-muted'>No mobiles found.</p>";
         return;
       }
 
@@ -59,16 +59,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         container.appendChild(card);
       });
 
-      container.style.display = "flex";
-      container.style.flexWrap = "wrap";
-      container.style.gap = "0.5rem";
-
     } catch (err) {
       console.error("Error fetching mobiles:", err);
     }
   }
 
-  // Event listeners
+  // Filter button on filtered.html
   filterBtn.addEventListener("click", fetchMobiles);
   searchBox.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -77,12 +73,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // On page load, if URL has query params
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has("brand")) brandSelect.value = urlParams.get("brand");
-  if (urlParams.has("sort")) sortSelect.value = urlParams.get("sort");
-  if (urlParams.has("q")) searchBox.value = urlParams.get("q");
-
-  fetchMobiles(); // initial render
+  // Initial load
+  fetchMobiles();
 });
-
