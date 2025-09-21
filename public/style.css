@@ -56,3 +56,18 @@
   height: 120px;
   object-fit: contain;
 }
+
+
+/* Add in your style.css */
+
+.scroll-container {
+  display: flex;
+  gap: 0.5rem; /* card spacing */
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

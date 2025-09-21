@@ -1,49 +1,41 @@
-// render.js for index.html
+// render.js - full card clickable, remove view button
 document.addEventListener("DOMContentLoaded", async () => {
   const latestContainer = document.getElementById("LetestmobilesContainer");
   const popularContainer = document.getElementById("mobilesContainer");
 
+  const createCard = (m) => {
+    const card = document.createElement("a");
+    card.href = `main.html?id=${m._id}`;
+    card.className = "card me-2 shadow-sm text-decoration-none text-dark";
+    card.style.minWidth = "112px"; // 25% smaller
+    card.innerHTML = `
+      <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:112px; object-fit:cover;">
+      <div class="card-body p-2 text-center">
+        <h6 class="card-title mb-1" style="font-size:0.75rem;">${m.brand} ${m.model}</h6>
+        <p class="text-success mb-1" style="font-size:0.75rem;">₹ ${m.price.toLocaleString()}</p>
+      </div>`;
+    return card;
+  };
+
   try {
-    // Fetch latest 10 mobiles
     const res = await fetch("/api/mobiles?limit=10");
     const data = await res.json();
 
-    // Render Latest Mobiles
+    // Latest
     if (latestContainer) {
       latestContainer.innerHTML = "";
-      data.results.forEach(m => {
-        const card = document.createElement("div");
-        card.className = "card me-2";
-        card.style.minWidth = "150px";
-        card.innerHTML = `
-          <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
-          <div class="card-body p-2 text-center">
-            <h6 class="card-title mb-1">${m.brand} ${m.model}</h6>
-            <p class="text-success mb-1">₹ ${m.price.toLocaleString()}</p>
-            <a href="main.html?id=${m._id}" class="btn btn-sm btn-outline-primary">View</a>
-          </div>`;
-        latestContainer.appendChild(card);
+      data.results.filter(m => m.latest).forEach(m => {
+        latestContainer.appendChild(createCard(m));
       });
     }
 
-    // Render Popular Mobiles (same as latest for now)
+    // Popular
     if (popularContainer) {
       popularContainer.innerHTML = "";
-      data.results.forEach(m => {
-        const card = document.createElement("div");
-        card.className = "card me-2";
-        card.style.minWidth = "150px";
-        card.innerHTML = `
-          <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
-          <div class="card-body p-2 text-center">
-            <h6 class="card-title mb-1">${m.brand} ${m.model}</h6>
-            <p class="text-success mb-1">₹ ${m.price.toLocaleString()}</p>
-            <a href="main.html?id=${m._id}" class="btn btn-sm btn-outline-primary">View</a>
-          </div>`;
-        popularContainer.appendChild(card);
+      data.results.filter(m => m.popular).forEach(m => {
+        popularContainer.appendChild(createCard(m));
       });
     }
-
   } catch (err) {
     console.error("Error fetching mobiles:", err);
     if (latestContainer) latestContainer.innerHTML = "<p class='text-muted'>Failed to load latest mobiles.</p>";

@@ -39,7 +39,7 @@ const sample = [
       { store: "Samsung Store", url: "https://samsung.com/in/s24-ultra" }
     ],
     popular: true,
-    latest: true
+    latest: false
   },
   {
     brand: "Apple",
@@ -74,7 +74,7 @@ const sample = [
       { store: "Apple Store", url: "https://apple.com/in/iphone-15-pro" }
     ],
     popular: true,
-    latest: true
+    latest: false
   },
   {
     brand: "OnePlus",
@@ -173,8 +173,8 @@ const sample = [
       { store: "Amazon", url: "https://amazon.in/realme-gt-5-pro" },
       { store: "Flipkart", url: "https://flipkart.com/realme-gt-5-pro" }
     ],
-    popular: true,
-    latest: false
+    popular: false,
+    latest: true
   },
 
   {
@@ -350,7 +350,7 @@ const sample = [
       { store: "Amazon", url: "https://amazon.in/realme-narzo-60-pro" },
       { store: "Flipkart", url: "https://flipkart.com/realme-narzo-60-pro" }
     ],
-    popular: false,
+    popular: true,
     latest: false
   }
 
