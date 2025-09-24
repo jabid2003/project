@@ -11,8 +11,6 @@ const sample = [
     model: "Galaxy S24 Ultra",
     price: 79999,
     images: [
-      "https://example.com/s24ultra_front.jpg",
-      "https://example.com/s24ultra_back.jpg",
       "https://example.com/s24ultra_side.jpg"
     ],
     highlights: [
@@ -46,8 +44,7 @@ const sample = [
     model: "iPhone 15 Pro",
     price: 134999,
     images: [
-      "https://example.com/iphone15pro_front.jpg",
-      "https://example.com/iphone15pro_back.jpg",
+  
       "https://example.com/iphone15pro_side.jpg"
     ],
     highlights: [
@@ -81,8 +78,8 @@ const sample = [
     model: "Nord 4",
     price: 29999,
     images: [
-      "https://example.com/nord4_front.jpg",
-      "https://example.com/nord4_back.jpg"
+      "https://example.com/nord4_front.jpg"
+     
     ],
     highlights: [
       "6.5-inch AMOLED, 90Hz",
@@ -115,8 +112,8 @@ const sample = [
     model: "Note 13 Pro+",
     price: 25999,
     images: [
-      "https://example.com/note13pro+_front.jpg",
-      "https://example.com/note13pro+_back.jpg"
+      "https://example.com/note13pro+_front.jpg"
+     
     ],
     highlights: [
       "6.67-inch AMOLED, 120Hz",
@@ -148,8 +145,8 @@ const sample = [
     model: "GT 5 Pro",
     price: 54999,
     images: [
-      "https://example.com/realmegt5pro_front.jpg",
-      "https://example.com/realmegt5pro_back.jpg"
+      "https://example.com/realmegt5pro_front.jpg"
+     
     ],
     highlights: [
       "6.78-inch AMOLED, 144Hz",
@@ -182,8 +179,8 @@ const sample = [
     model: "X90 Pro",
     price: 59999,
     images: [
-      "https://example.com/vivox90pro_front.jpg",
-      "https://example.com/vivox90pro_back.jpg"
+      "https://example.com/vivox90pro_front.jpg"
+    
     ],
     highlights: [
       "6.78-inch AMOLED, 120Hz",
@@ -226,8 +223,8 @@ const sample = [
     model: "Find X6 Pro",
     price: 72999,
     images: [
-      "https://example.com/oppofindx6pro_front.jpg",
-      "https://example.com/oppofindx6pro_back.jpg"
+      "https://example.com/oppofindx6pro_front.jpg"
+     
     ],
     highlights: [
       "6.82-inch AMOLED, 120Hz",
@@ -259,8 +256,8 @@ const sample = [
     model: "Edge 40 Pro",
     price: 48999,
     images: [
-      "https://example.com/motoedge40pro_front.jpg",
-      "https://example.com/motoedge40pro_back.jpg"
+      "https://example.com/motoedge40pro_front.jpg"
+     
     ],
     highlights: [
       "6.7-inch P-OLED, 144Hz",
@@ -292,8 +289,8 @@ const sample = [
     model: "Phone 2",
     price: 39999,
     images: [
-      "https://example.com/nothingphone2_front.jpg",
-      "https://example.com/nothingphone2_back.jpg"
+      "https://example.com/nothingphone2_front.jpg"
+      
     ],
     highlights: [
       "6.7-inch OLED, 120Hz",
@@ -325,8 +322,8 @@ const sample = [
     model: "Narzo 60 Pro",
     price: 15999,
     images: [
-      "https://example.com/narzo60pro_front.jpg",
-      "https://example.com/narzo60pro_back.jpg"
+      "https://example.com/narzo60pro_front.jpg"
+      
     ],
     highlights: [
       "6.6-inch IPS LCD, 120Hz",

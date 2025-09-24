@@ -19,33 +19,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error fetching brands:", err);
   }
 
-  // Get URL params for initial filter
+  // Get URL params
   const urlParams = new URLSearchParams(window.location.search);
   const brandParam = urlParams.get("brand") || "";
   const sortParam = urlParams.get("sort") || "";
 
-  brandSelect.value = brandParam;
-  sortSelect.value = sortParam;
+  // Set initial values and fetch mobiles **after options populated**
+  setTimeout(() => {
+    brandSelect.value = brandParam;
+    sortSelect.value = sortParam;
+    fetchMobiles(); // initial load with query params
+  }, 50); // short timeout to ensure options are ready
 
   async function fetchMobiles() {
     const params = new URLSearchParams();
     if (brandSelect.value) params.append("brand", brandSelect.value);
     if (sortSelect.value) params.append("sort", sortSelect.value);
 
-    // Show loader before fetch
-    container.innerHTML = `
-      <div class="d-flex justify-content-center my-5">
-        <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+    container.innerHTML = `<div class="d-flex justify-content-center my-5">
+      <div class="spinner-border text-success" style="width:3rem; height:3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
-    `;
+    </div>`;
 
     try {
       const res = await fetch(`/api/mobiles?${params.toString()}`);
       const data = await res.json();
-
-      container.innerHTML = ""; // clear loader
+      container.innerHTML = "";
 
       if (!data.results.length) {
         container.innerHTML = "<p class='text-muted'>No mobiles found.</p>";
@@ -60,28 +60,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         card.style.maxWidth = "180px";
         card.innerHTML = `
           <div class="card shadow-sm text-center">
-            <img src="${m.images?.[0] || 'placeholder.jpg'}" 
-                 class="card-img-top mx-auto mt-2" 
-                 style="width:90%; height:auto; object-fit:contain;">
+            <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top mx-auto mt-2" style="width:90%; height:auto; object-fit:contain;">
             <div class="card-body p-2">
-              <h6 class="card-title mb-1" style="font-size:0.85rem;">
-                ${m.brand} ${m.model}
-              </h6>
-              <p class="text-success fw-bold mt-2" style="font-size:0.9rem;">
-                ₹${m.price.toLocaleString()}
-              </p>
+              <h6 class="card-title mb-1" style="font-size:0.85rem;">${m.brand} ${m.model}</h6>
+              <p class="text-success fw-bold mt-2" style="font-size:0.9rem;">₹${m.price.toLocaleString()}</p>
             </div>
           </div>`;
         container.appendChild(card);
       });
-
     } catch (err) {
       container.innerHTML = "<p class='text-danger'>Failed to load mobiles.</p>";
-      console.error("Error fetching mobiles:", err);
+      console.error(err);
     }
   }
 
-  // Filter button on filtered.html
+  // Filter button & Enter key
   filterBtn.addEventListener("click", fetchMobiles);
   searchBox.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
@@ -89,7 +82,4 @@ document.addEventListener("DOMContentLoaded", async () => {
       fetchMobiles();
     }
   });
-
-  // Initial load
-  fetchMobiles();
 });

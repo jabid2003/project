@@ -12,17 +12,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await res.json();
 
     // Latest
-    if (latestContainer) {
+     if (latestContainer) {
       latestContainer.innerHTML = "";
-      data.results.filter(m => m.latest).forEach(m => {
+      data.results.filter(m => m.popular).forEach(m => {
         const card = document.createElement("a");
         card.href = `main.html?id=${m._id}`;
         card.className = "card me-2 text-decoration-none text-dark";
         card.style.minWidth = "150px";
         card.innerHTML = `
           <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
-          <div class="card-body p-2 text-center">
-            <h6 class="card-title mb-1">${m.brand} ${m.model}</h6>
+          <div class="card-body text-center">
+            <h6 class="card-title mb-1">${m.brand} </h6>
+            <h6 class="card-title mb-1">${m.model}</h6>
+
             <p class="text-success mb-1">₹${m.price.toLocaleString()}</p>
           </div>`;
         latestContainer.appendChild(card);
@@ -39,8 +41,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         card.style.minWidth = "150px";
         card.innerHTML = `
           <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
-          <div class="card-body p-2 text-center">
-            <h6 class="card-title mb-1">${m.brand} ${m.model}</h6>
+          <div class="card-body  text-center">
+            <h6 class="card-title mb-1">${m.brand} </h6>
+            <h6 class="card-title mb-1">${m.model}</h6>
+
             <p class="text-success mb-1">₹${m.price.toLocaleString()}</p>
           </div>`;
         popularContainer.appendChild(card);
@@ -98,6 +102,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   }
+
+   // Navbar search logic (ye tumhara code)
+  const navbarSearchForm = document.getElementById("navbarSearchForm");
+  const navbarSearchInput = document.getElementById("navbarSearchInput");
+
+  if (navbarSearchForm && navbarSearchInput) {
+    navbarSearchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const query = navbarSearchInput.value.trim();
+      if (query) {
+        window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
+      }
+    });
+  }
+
 
   // Optional: Enter key in brand select triggers filter
   if (brandSelect) {
