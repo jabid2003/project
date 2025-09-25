@@ -1,8 +1,11 @@
+/* Reset */
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
+/* Hide scrollbar */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -12,44 +15,28 @@
   scrollbar-width: none;
 }
 
-#container {
+/* Scroll containers */
+#container, #mobilesContainer {
+  display: flex;
   gap: 4px;
-  /* cards ke beech thoda gap */
-  scroll-snap-type: x mandatory;
-  /* horizontal snap enable */
-  -webkit-overflow-scrolling: touch;
-  /* mobile smooth scroll */
-}
-
-#container>div {
-  scroll-snap-align: start;
-  /* har card left edge par snap hoga */
-}
-
-
-#mobilesContainer {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  gap: 4px;
+  overflow-x: auto;
 }
 
-#mobilesContainer>div {
+#container>div, #mobilesContainer>div {
   scroll-snap-align: start;
-}
-
-#mobilesContainer a {
   flex: 0 0 auto;
-  /* Prevent shrinking */
 }
 
-
+/* Responsive grid for filtered mobiles */
 #filteredMobilesContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  /* responsive grid */
   gap: 4px;
 }
 
+/* Small cards */
 .card-small {
   font-size: 0.75rem;
   text-align: center;
@@ -61,98 +48,78 @@
   object-fit: contain;
 }
 
-
-/* Add in your style.css */
-
+/* Scroll container for popular/latest mobiles */
 .scroll-container {
-  display: flex;
-
-  overflow-x: auto;
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE 10+ */
+  display: flex;               /* horizontal layout for cards */
+  gap: 4px;                    /* cards ke beech spacing */
+  padding: 10px 0;             /* top-bottom padding */
+  overflow-x: auto;            /* enable horizontal scroll */
+  -ms-overflow-style: none;    /* IE & Edge scrollbar hide */
+  scrollbar-width: none;       /* Firefox scrollbar hide */
+  
 }
 
 .scroll-container::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, Edge */
+  display: none;               /* Chrome, Safari, Edge scrollbar hide */
 }
 
-
-/* Customization*/
-.csGreen {
-  color: #28a745 !important;
+.scroll-container .card {
+  flex: 0 0 auto;         /* prevent shrinking, horizontal scroll maintain */border-radius: 15px;         
+  background: #fff;            
+  border: 1px solid #000;      
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-radius {
-  border-radius: 0px 12px 12px 0px !important;
+.scroll-container .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.search-box-radius {
-  border-radius: 5px 0px 0px 5px !important;
-}
-
-/* Desktop search box */
-.navbar .d-md-flex .input-group {
-  width: auto !important;
-  /* current size se chhota */
-}
-
-/* Mobile search box inside hamburger */
-.navbar .d-md-none .input-group {
-  width: 250px;
-  /* full width in collapse */
-}
-
-/**/
-
-/*Theme*/
+/* General */
 body {
-  background-color: #f8f9fa;
+  background-color: #fff;
+  color: #000;
   font-family: 'Segoe UI', sans-serif;
 }
 
 /* Navbar */
-
 .navbar {
-  background: linear-gradient(135deg, #007bff, #00c6ff);
+  background: #fff;
   z-index: 1021;
 }
 
 .navbar-brand {
-  color: #fff !important;
+  color: #000 !important;
   font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .navbar .btn {
   border-radius: 25px;
+  background: #000;
+  color: #fff;
+  border: 1px solid #000;
+  transition: 0.3s;
 }
 
-/* Hero */
+.navbar .btn:hover {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+/* Hero section */
 .hero-section {
   min-height: 65vh;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: white;
+  background: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   padding: 50px 20px;
   position: relative;
-  overflow: hidden;
 }
-
-/* .hero-section::after {
-  content: "";
-  position: absolute;
-  top: -50px;
-  left: -50px;
-  width: 200%;
-  height: 200%;
-  background: rgba(255, 255, 255, 0.1);
-  transform: rotate(-10deg);
-} */
 
 .hero-section h1 {
   font-weight: bold;
@@ -160,55 +127,98 @@ body {
 
 .hero-section .input-group input {
   border-radius: 25px 0 0 25px;
+  border: 1px solid #000;
 }
 
 .hero-section .input-group button {
   border-radius: 0 25px 25px 0;
+  border: 1px solid #000;
+  background: #000;
+  color: #fff;
+  transition: 0.3s;
 }
 
-/* Brand buttons */
-.brand-row .btn {
-  border-radius: 20px;
+.hero-section .input-group button:hover {
+  background: #fff;
+  color: #000;
+}
+
+/* Brand chips */
+.brand-chip {
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 50px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
   transition: all 0.3s ease;
 }
 
-.brand-row .btn:hover {
-  background-color: #007bff;
-  color: white;
+.brand-chip:hover {
+  background: #000;
+  color: #fff;
+  border-color: #000;
 }
 
-/* Card scroll containers */
-
-.scroll-container {
-  gap: 4px;
-  padding: 10px 0px 10px 0px;
-  overflow: visible;
+/* Secondary Navbar */
+.secondary-navbar {
+  position: sticky;
+  top: 62px;
+  background-color: #fff;
+  border-bottom: 1px solid #000;
+  z-index: 1020;
 }
 
-.scroll-container .card {
-  border-radius: 15px;
-  /* min-width: 200px; */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.secondary-navbar a {
+  color: #000;
+  text-decoration: none;
+  padding: 2px 6px;
+  border-radius: 5px;
+  transition: 0.3s;
 }
 
-.scroll-container .card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(47, 48, 50, 0.2);
+.secondary-navbar a:hover {
+  background: #000;
+  color: #fff;
 }
 
-.hide-scrollbar {
-  -ms-overflow-style: none;  /* IE & Edge */
-  scrollbar-width: none;     /* Firefox */
+/* Filters */
+.form-select, .btn-primary {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  transition: 0.3s;
 }
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;             /* Chrome, Safari */
+
+.form-select:focus, .btn-primary:hover {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+#filterBtnPage {
+  background-color: black;
+  color: #fff;
+  border: 1px solid #000; /* optional border */
+  transition: all 0.6s ease;
+}
+
+#filterBtnPage:hover,
+#filterBtnPage:focus,
+#filterBtnPage:active {
+ background-color: #fff;
+ color: #000;
+
 }
 
 
 /* Footer */
 footer {
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: white;
+  background: #000;
+  color: #fff;
   padding: 25px 15px;
   display: flex;
   flex-direction: column;
@@ -218,30 +228,18 @@ footer {
 }
 
 footer a {
-  color: white;
+  color: #fff;
   text-decoration: none;
   margin: 0 8px;
   transition: all 0.2s ease;
 }
 
 footer a:hover {
-  color: #d0e7ff;
+  color: #000;
   text-decoration: underline;
 }
 
-.secondary-navbar {
-  position: sticky;
-  top: 62px;
-  /* primary navbar ke height ke just neeche */
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  z-index: 1020;
-}
-
-
-
-/**/
-
+/* Navbar toggler */
 .navbar-toggler {
   border: none !important;
   outline: none !important;
@@ -252,10 +250,4 @@ footer a:hover {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-}
-
-
-#filterBtnPage{
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-
 }

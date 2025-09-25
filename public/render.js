@@ -11,43 +11,35 @@ document.addEventListener("DOMContentLoaded", async () => {
     const res = await fetch("/api/mobiles?limit=10");
     const data = await res.json();
 
-    // Latest
-     if (latestContainer) {
-      latestContainer.innerHTML = "";
-      data.results.filter(m => m.popular).forEach(m => {
-        const card = document.createElement("a");
-        card.href = `main.html?id=${m._id}`;
-        card.className = "card me-2 text-decoration-none text-dark";
-        card.style.minWidth = "150px";
-        card.innerHTML = `
-          <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
-          <div class="card-body text-center">
-            <h6 class="card-title mb-1">${m.brand} </h6>
-            <h6 class="card-title mb-1">${m.model}</h6>
+    // Helper function to create card
+    function createCard(mobile) {
+      const card = document.createElement("a");
+      card.href = `main.html?id=${mobile._id}`;
+      card.className = "card me-2 text-decoration-none text-dark";
+      card.style.minWidth = "150px";
+      card.innerHTML = `
+        <img src="${mobile.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
+        <div class="card-body text-center">
+          <h6 class="card-title mb-1">${mobile.brand}</h6>
+          <h6 class="card-title mb-1">${mobile.model}</h6>
+          <p class="text-success mb-1">₹${mobile.price.toLocaleString()}</p>
+        </div>`;
+      return card;
+    }
 
-            <p class="text-success mb-1">₹${m.price.toLocaleString()}</p>
-          </div>`;
-        latestContainer.appendChild(card);
+    // Popular Mobiles - filter by popular
+    if (popularContainer) {
+      popularContainer.innerHTML = "";
+      data.results.filter(m => m.popular).forEach(mobile => {
+        popularContainer.appendChild(createCard(mobile));
       });
     }
 
-    // Popular
-    if (popularContainer) {
-      popularContainer.innerHTML = "";
-      data.results.filter(m => m.popular).forEach(m => {
-        const card = document.createElement("a");
-        card.href = `main.html?id=${m._id}`;
-        card.className = "card me-2 text-decoration-none text-dark";
-        card.style.minWidth = "150px";
-        card.innerHTML = `
-          <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top" style="height:150px; object-fit:cover;">
-          <div class="card-body  text-center">
-            <h6 class="card-title mb-1">${m.brand} </h6>
-            <h6 class="card-title mb-1">${m.model}</h6>
-
-            <p class="text-success mb-1">₹${m.price.toLocaleString()}</p>
-          </div>`;
-        popularContainer.appendChild(card);
+    // Latest Mobiles - last 7 added
+    if (latestContainer) {
+      latestContainer.innerHTML = "";
+      data.results.slice(-7).forEach(mobile => {
+        latestContainer.appendChild(createCard(mobile));
       });
     }
 
@@ -83,40 +75,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Search bar → redirect to searchResults.html
   if (filterBtnSearch && searchBox) {
-    filterBtnSearch.addEventListener("click", (e) => {
-      e.preventDefault();
+    const performSearch = () => {
       const query = searchBox.value.trim();
-      if (query) {
-        window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
-      }
-    });
-
-    // Enter key in search box
-    searchBox.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        const query = searchBox.value.trim();
-        if (query) {
-          window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
-        }
-      }
-    });
+      if (query) window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
+    };
+    filterBtnSearch.addEventListener("click", (e) => { e.preventDefault(); performSearch(); });
+    searchBox.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); performSearch(); } });
   }
 
-   // Navbar search logic (ye tumhara code)
+  // Navbar search logic
   const navbarSearchForm = document.getElementById("navbarSearchForm");
   const navbarSearchInput = document.getElementById("navbarSearchInput");
-
   if (navbarSearchForm && navbarSearchInput) {
     navbarSearchForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const query = navbarSearchInput.value.trim();
-      if (query) {
-        window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
-      }
+      if (query) window.location.href = `searchResults.html?q=${encodeURIComponent(query)}`;
     });
   }
-
 
   // Optional: Enter key in brand select triggers filter
   if (brandSelect) {
