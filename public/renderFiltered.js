@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <img src="${m.images?.[0] || 'placeholder.jpg'}" class="card-img-top mx-auto mt-2" style="width:90%; height:auto; object-fit:contain;">
             <div class="card-body p-2">
               <h6 class="card-title mb-1" style="font-size:0.85rem;">${m.brand} ${m.model}</h6>
-              <p class="text-success fw-bold mt-2" style="font-size:0.9rem;">₹${m.price.toLocaleString()}</p>
+              <p class="text-success fw-bold mt-2" style="font-size:0.9rem;">₹ ${m.price.toLocaleString()}</p>
             </div>
           </div>`;
         container.appendChild(card);

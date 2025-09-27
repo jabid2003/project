@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="card-body p-2">
             <h6 class="card-title mb-1" style="font-size:0.85rem;">${m.brand} ${m.model}</h6>
             <p class="text-success fw-bold mt-2" style="font-size:0.9rem;">
-              ₹${m.price.toLocaleString()}
+              ₹ ${m.price.toLocaleString()}
             </p>
           </div>
         </div>`;
