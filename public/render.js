@@ -6,52 +6,94 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filterBtnSearch = document.getElementById("filterBtnSearch"); // search button
   const searchBox = document.getElementById("searchBoxFilter");
 
-  try {
-    const res = await fetch("/api/mobiles?limit=10");
-    const data = await res.json();
+  // 🔹 Compare List global state
+  let compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+  let allMobiles = [];
 
-    // Helper: create a card
+  try {
+    const res = await fetch("/api/mobiles?limit=50");
+    const data = await res.json();
+    allMobiles = data.results;
+
+    // Helper: create a card with Compare Checkbox
     function createCard(mobile) {
-      const card = document.createElement("a");
-      card.href = `main.html?id=${mobile._id}`;
-      card.className = "card me-2 text-decoration-none text-dark";
+      const card = document.createElement("div");
+      card.className = "card me-2 text-dark";
       card.style.minWidth = "150px";
       card.innerHTML = `
-        <img src="${mobile.images?.[0] || 'placeholder.jpg'}" 
-             class="card-img-top" 
-             style="height:150px; object-fit:cover;">
-        <div class="card-body text-center">
-          <h6 class="card-title mb-1">${mobile.brand}</h6>
-          <h6 class="card-title mb-1">${mobile.model}</h6>
-          <p class="text-success mb-1">₹ ${mobile.price.toLocaleString()}</p>
-        </div>`;
+        <a href="main.html?id=${mobile._id}" class="text-decoration-none text-dark">
+          <img src="${mobile.images?.[0] || 'placeholder.jpg'}" 
+               class="card-img-top" 
+               style="height:150px; object-fit:cover;">
+          <div class="card-body text-center">
+            <h6 class="card-title mb-1">${mobile.brand}</h6>
+            <h6 class="card-title mb-1">${mobile.model}</h6>
+            <p class="text-success mb-1">₹ ${mobile.price.toLocaleString()}</p>
+          </div>
+        </a>
+        <div class="form-check mt-1">
+          <input class="form-check-input addToCompare" type="checkbox" id="compare-${mobile._id}">
+          <label class="form-check-label w-100 text-primary small" for="compare-${mobile._id}">
+            Add to Compare
+          </label>
+        </div>
+      `;
+
+      const checkbox = card.querySelector(".addToCompare");
+
+      // पहले से selected है तो checked दिखाओ
+      if (compareList.some(m => m._id === mobile._id)) {
+        checkbox.checked = true;
+      }
+
+      // Checkbox change logic
+      checkbox.addEventListener("change", () => {
+        if (checkbox.checked) {
+          if (!compareList.some(m => m._id === mobile._id)) {
+            if (compareList.length >= 2) {
+              // सबसे पहला remove करो
+              const removed = compareList.shift();
+
+              // उसके सारे checkboxes uncheck कर दो
+              document.querySelectorAll(`#compare-${removed._id}`).forEach(cb => {
+                cb.checked = false;
+              });
+            }
+            compareList.push(mobile);
+          }
+        } else {
+          // Uncheck → remove
+          compareList = compareList.filter(m => m._id !== mobile._id);
+        }
+
+        localStorage.setItem("compareList", JSON.stringify(compareList));
+      });
+
       return card;
     }
 
-    // Reusable render function without loader
+    // Reusable render function
     function renderMobiles(container, mobiles, flagKey) {
       if (!container) return;
-      container.innerHTML = ""; // clear before render
+      container.innerHTML = "";
 
       const filtered = mobiles.filter(m => m[flagKey]);
       if (filtered.length === 0) {
         container.innerHTML = `<p class="text-muted w-100 text-center">No mobiles found</p>`;
       } else {
-        filtered.forEach(mobile => {
-          container.appendChild(createCard(mobile));
-        });
+        filtered.forEach(mobile => container.appendChild(createCard(mobile)));
       }
     }
 
-    // Render popular & latest
-    renderMobiles(popularContainer, data.results, "popular");
-    renderMobiles(latestContainer, data.results, "latest");
+    // Initial render
+    renderMobiles(popularContainer, allMobiles, "popular");
+    renderMobiles(latestContainer, allMobiles, "latest");
 
   } catch (err) {
     console.error("Error fetching mobiles:", err);
   }
 
-  // Populate brand options
+  // 🔹 Brand dropdown populate
   if (brandSelect) {
     try {
       const resBrands = await fetch("/api/mobiles/brands");
@@ -67,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // Brand filter redirect
+  // 🔹 Brand filter redirect
   if (filterBtn) {
     filterBtn.addEventListener("click", (e) => {
       e.preventDefault();
@@ -77,7 +119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Search (filter section)
+  // 🔹 Search filter section
   if (filterBtnSearch && searchBox) {
     const performSearch = () => {
       const query = searchBox.value.trim();
@@ -87,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     searchBox.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); performSearch(); } });
   }
 
-  // Navbar search
+  // 🔹 Navbar search
   const navbarSearchForm = document.getElementById("navbarSearchForm");
   const navbarSearchInput = document.getElementById("navbarSearchInput");
   if (navbarSearchForm && navbarSearchInput) {
@@ -98,7 +140,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  // Enter key in brand select
+  // 🔹 Enter key in brand select
   if (brandSelect) {
     brandSelect.addEventListener("keydown", (e) => {
       if (e.key === "Enter") filterBtn.click();
