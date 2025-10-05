@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       const id = e.target.dataset.id;
       compareList = compareList.filter(m => m._id !== id);
       localStorage.setItem("compareList", JSON.stringify(compareList));
+
+      // 👇 ये flag set करेंगे ताकि index page पर checkboxes update हों
+      localStorage.setItem("compareUpdated", "true");
+
       location.reload();
     });
   });

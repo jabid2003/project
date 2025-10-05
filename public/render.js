@@ -31,20 +31,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p class="text-success mb-1">₹ ${mobile.price.toLocaleString()}</p>
           </div>
         </a>
-        <div class="form-check mt-1">
-          <input class="form-check-input addToCompare" type="checkbox" id="compare-${mobile._id}">
+        <div class="form-check m-1">
+          <input class="form-check-input compareCheckbox" type="checkbox" data-id="${mobile._id}" id="compare-${mobile._id}">
           <label class="form-check-label w-100 text-primary small" for="compare-${mobile._id}">
             Add to Compare
           </label>
         </div>
       `;
 
-      const checkbox = card.querySelector(".addToCompare");
+      const checkbox = card.querySelector(".compareCheckbox");
 
-      // पहले से selected है तो checked दिखाओ
-      if (compareList.some(m => m._id === mobile._id)) {
-        checkbox.checked = true;
-      }
+      // 🔹 Initial sync from localStorage
+      checkbox.checked = compareList.some(m => m._id === mobile._id);
 
       // Checkbox change logic
       checkbox.addEventListener("change", () => {
@@ -55,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               const removed = compareList.shift();
 
               // उसके सारे checkboxes uncheck कर दो
-              document.querySelectorAll(`#compare-${removed._id}`).forEach(cb => {
+              document.querySelectorAll(`.compareCheckbox[data-id="${removed._id}"]`).forEach(cb => {
                 cb.checked = false;
               });
             }
@@ -66,7 +64,13 @@ document.addEventListener("DOMContentLoaded", async () => {
           compareList = compareList.filter(m => m._id !== mobile._id);
         }
 
+        // ✅ LocalStorage update
         localStorage.setItem("compareList", JSON.stringify(compareList));
+
+        // ✅ उसी ID वाले सारे checkboxes sync कर दो (Latest + Popular दोनों)
+        document.querySelectorAll(`.compareCheckbox[data-id="${mobile._id}"]`).forEach(cb => {
+          cb.checked = checkbox.checked;
+        });
       });
 
       return card;
@@ -146,4 +150,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (e.key === "Enter") filterBtn.click();
     });
   }
+
+  // 🔹 🔹 Sync all checkboxes on page load & back/forward navigation
+  const syncAllCheckboxes = () => {
+    const compareList = JSON.parse(localStorage.getItem("compareList")) || [];
+    document.querySelectorAll(".compareCheckbox").forEach(cb => {
+      const id = cb.dataset.id;
+      cb.checked = compareList.some(m => m._id === id);
+    });
+  };
+
+  // Initial sync
+  syncAllCheckboxes();
+
+  // Sync on browser back/forward
+  window.addEventListener("pageshow", syncAllCheckboxes);
 });
