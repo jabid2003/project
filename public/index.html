@@ -44,19 +44,19 @@
   <!-- Secondary Navbar -->
   <div class="secondary-navbar border-top border-bottom border-dark">
     <div class="container d-flex justify-content-between py-2">
-      <a href="index.html" class="mx-3 text-decoration-none " data-bs-toggle="tooltip" data-bs-placement="bottom"
+      <a href="index.html" class="mx-3 text-decoration-none " data-bs-placement="bottom"
         title="Go to Home">
         <i class="fa-solid fa-house"></i>
       </a>
-      <a href="filtered.html?brand=&sort=" class="mx-3 text-decoration-none " data-bs-toggle="tooltip"
+      <a href="filtered.html?brand=&sort=" class="mx-3 text-decoration-none "
         data-bs-placement="bottom" title="Browse all Brands">
         <i class="fa-solid fa-tags"></i>
       </a>
-      <a href="compare.html" class="mx-3 text-decoration-none " data-bs-toggle="tooltip" data-bs-placement="bottom"
+      <a href="compare.html" class="mx-3 text-decoration-none " data-bs-placement="bottom"
         title="Compare Mobiles">
         <i class="fa-solid fa-table-columns"></i>
       </a>
-      <a href="contact.html" class="mx-3 text-decoration-none " data-bs-toggle="tooltip" data-bs-placement="bottom"
+      <a href="contact.html" class="mx-3 text-decoration-none " data-bs-placement="bottom"
         title="Contact Us">
         <i class="fa-solid fa-envelope"></i>
       </a>
@@ -142,6 +142,12 @@
     <div class="d-flex flex-row scroll-container" id="LetestmobilesContainer"></div>
   </div>
 
+  <!-- Fixed Compare Button -->
+<a href="compare.html" id="compareBtn" class="btn btn-dark">
+  <i class="fa-solid fa-table-columns"></i> Compare
+</a>
+
+
   <!-- Footer -->
   <footer>
     <p class="mb-2">&copy; 2025 GadgetsHood | Explore. Analyze. Order.</p>
@@ -172,16 +178,6 @@
         const sort = document.getElementById("sortFilter").value;
 
         window.location.href = `filtered.html?brand=${brand}&sort=${sort}`;
-      });
-    });
-  </script>
-
-  <!--tooptip script-->
-
-  <script>document.addEventListener("DOMContentLoaded", function () {
-      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
       });
     });
   </script>

@@ -25,14 +25,14 @@ document.addEventListener("DOMContentLoaded", async () => {
           <img src="${mobile.images?.[0] || 'placeholder.jpg'}" 
                class="card-img-top" 
                style="height:150px; object-fit:cover;">
-          <div class="card-body text-center">
+          <div class="card-body text-center p-0 mt-1">
             <h6 class="card-title mb-1">${mobile.brand}</h6>
             <h6 class="card-title mb-1">${mobile.model}</h6>
             <p class="text-success mb-1">₹ ${mobile.price.toLocaleString()}</p>
           </div>
         </a>
-        <div class="form-check m-1">
-          <input class="form-check-input compareCheckbox" type="checkbox" data-id="${mobile._id}" id="compare-${mobile._id}">
+        <div class="form-check d-flex mx-1">
+          <input class="form-check-input compareCheckbox me-1 border border-dark " type="checkbox" data-id="${mobile._id}" id="compare-${mobile._id}"style="cursor:alias;">
           <label class="form-check-label w-100 text-primary small" for="compare-${mobile._id}">
             Add to Compare
           </label>

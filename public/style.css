@@ -3,6 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 
 /* Hide scrollbar */
@@ -269,4 +270,51 @@ footer a:hover {
   align-items: center;
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+
+/*contact.html*/
+
+.social-icons .social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #fff;      /* same as card background */
+  color: #000;           /* icon color */
+  border: 1px solid #000;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-icons .social-icon:hover {
+  background: #000;       /* hover background black */
+  color: #fff;            /* icon white */
+  transform: translateY(-3px);
+  border-color: #000;
+}
+
+/*contact.html*/
+
+
+
+#compareBtn {
+  position: fixed;
+  right: 10px;              /* distance from right edge */
+  bottom: 20%;              /* half screen se thoda neeche */
+  z-index: 1050;            /* sabke upar */
+  padding: 6px 9px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, background 0.3s ease;
+  font-size: 0.8rem;
+}
+
+#compareBtn:shover {
+  transform: translateY(-3px);
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
 }
